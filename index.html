@@ -32,11 +32,14 @@
   .hero .badge{display:inline-block;background:var(--negro);color:var(--amarillo);font-weight:900;font-size:0.75rem;padding:0.25rem 0.8rem;border-radius:50px;margin-top:0.5rem;letter-spacing:1px;}
 
   /* TABS */
-  .tabs-wrap{background:var(--negro);overflow-x:auto;scrollbar-width:none;}
+  .tabs-wrap{background:var(--negro);overflow-x:auto;scrollbar-width:none;position:relative;}
   .tabs-wrap::-webkit-scrollbar{display:none;}
+  .tabs-wrap::after{content:'';position:absolute;right:0;top:0;bottom:0;width:64px;background:linear-gradient(to left,var(--negro) 40%,transparent);pointer-events:none;}
   .tabs{display:flex;width:max-content;padding:0 0.3rem;}
   .tab{background:none;border:none;color:rgba(255,255,255,0.55);font-family:'Nunito',sans-serif;font-weight:800;font-size:0.78rem;padding:0.75rem 0.85rem;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:color 0.2s,border-color 0.2s;letter-spacing:0.3px;}
   .tab.active,.tab:hover{color:var(--amarillo);border-bottom-color:var(--amarillo);}
+  .tabs-scroll-hint{position:absolute;right:8px;top:50%;transform:translateY(-50%);color:var(--amarillo);font-size:1.4rem;font-weight:900;pointer-events:none;animation:hint-pulse 0.9s ease-in-out infinite;line-height:1;}
+  @keyframes hint-pulse{0%,100%{opacity:0.5;transform:translateY(-50%) translateX(0)}50%{opacity:1;transform:translateY(-50%) translateX(5px)}}
 
   /* MAIN */
   main{max-width:900px;margin:0 auto;padding:0.9rem 0.6rem 8rem;}
@@ -155,11 +158,16 @@
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
   /* CARRITO */
-  .cart-panel{position:fixed;bottom:0;left:0;right:0;background:var(--negro);color:#fff;border-radius:20px 20px 0 0;box-shadow:0 -8px 40px rgba(0,0,0,0.35);transform:translateY(calc(100% - 52px));transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);z-index:200;max-height:90vh;overflow-y:auto;}
+  .cart-panel{position:fixed;bottom:0;left:0;right:0;background:var(--negro);color:#fff;border-radius:20px 20px 0 0;box-shadow:0 -8px 40px rgba(0,0,0,0.35);transform:translateY(calc(100% - 60px));transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);z-index:200;max-height:90vh;overflow-y:auto;}
   .cart-panel.open{transform:translateY(0);}
-  .cart-toggle-btn{display:flex;align-items:center;justify-content:space-between;padding:0 1.1rem;height:52px;cursor:pointer;background:var(--amarillo);border-radius:20px 20px 0 0;gap:0.5rem;user-select:none;}
-  #cartToggleText{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:2px;color:var(--negro);}
-  .cart-toggle-btn .cart-total-mini{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;color:var(--negro);font-weight:900;}
+  .cart-toggle-btn{display:flex;align-items:center;justify-content:space-between;padding:0 1.2rem;height:60px;cursor:pointer;background:var(--amarillo);border-radius:20px 20px 0 0;gap:0.5rem;user-select:none;transition:background 0.15s;}
+  .cart-toggle-btn:hover{background:#ffd000;}
+  #cartToggleText{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;color:var(--negro);display:flex;align-items:center;gap:0.5rem;}
+  .cart-toggle-btn .cart-total-mini{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--negro);font-weight:900;display:flex;align-items:center;gap:0.5rem;}
+  .cart-chevron{display:inline-block;font-size:1rem;transition:transform 0.3s;color:var(--negro);opacity:0.7;}
+  .cart-panel.open .cart-chevron{transform:rotate(180deg);}
+  @keyframes cart-pulse{0%,100%{box-shadow:0 -4px 0 0 rgba(245,192,0,0.4)}50%{box-shadow:0 -8px 0 0 rgba(245,192,0,0.15)}}
+  .cart-panel.has-items .cart-toggle-btn{animation:cart-pulse 2s ease-in-out infinite;}
   .cart-header-inner{display:flex;align-items:center;justify-content:space-between;padding:0.9rem 1.1rem 0.3rem;}
   .cart-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:2px;color:var(--amarillo);}
   .cart-total-mini{font-weight:900;font-size:0.95rem;color:var(--amarillo);}
@@ -222,6 +230,42 @@
   .confirm-modal{text-align:center;}
   .confirm-ok-btn{width:100%;background:var(--amarillo);border:none;border-radius:50px;padding:0.9rem;font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;cursor:pointer;color:var(--negro);transition:background 0.15s,transform 0.15s;}
   .confirm-ok-btn:hover{background:#ffd000;transform:scale(1.02);}
+
+  .ia-card{background:var(--negro);border-radius:16px;padding:1.2rem;color:#fff;box-shadow:var(--sombra);}
+  .ia-header{display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,0.1);}
+  .ia-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--amarillo);letter-spacing:1px;}
+  .ia-sub{font-size:0.78rem;color:rgba(255,255,255,0.55);margin-top:0.2rem;}
+  .ia-chat{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:0.8rem;}
+  .ia-msg{padding:0.6rem 0.8rem;border-radius:12px;font-size:0.82rem;line-height:1.5;max-width:90%;}
+  .ia-msg.bot{background:rgba(245,192,0,0.12);border-left:3px solid var(--amarillo);color:rgba(255,255,255,0.9);}
+  .ia-msg.user{background:rgba(255,255,255,0.08);align-self:flex-end;text-align:right;border-right:3px solid rgba(255,255,255,0.3);}
+  .ia-options{display:flex;flex-direction:column;gap:0.4rem;}
+  .ia-opt{background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.15);border-radius:10px;padding:0.6rem 0.9rem;color:rgba(255,255,255,0.8);font-size:0.82rem;font-weight:700;cursor:pointer;transition:all 0.15s;text-align:left;}
+  .ia-opt:hover{background:rgba(245,192,0,0.15);border-color:var(--amarillo);color:#fff;}
+  .ia-result-title{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--amarillo);letter-spacing:1px;margin-bottom:0.3rem;}
+  .ia-result-desc{font-size:0.8rem;color:rgba(255,255,255,0.6);line-height:1.5;margin-bottom:0.5rem;}
+  .ia-restart-btn{margin-top:0.8rem;background:none;border:1.5px solid rgba(255,255,255,0.2);border-radius:50px;padding:0.45rem 1rem;color:rgba(255,255,255,0.5);font-family:'Nunito',sans-serif;font-weight:700;font-size:0.78rem;cursor:pointer;width:100%;}
+  .ia-restart-btn:hover{border-color:var(--amarillo);color:var(--amarillo);}
+  .ia-typing{color:rgba(255,255,255,0.4);font-size:0.78rem;padding:0.3rem 0;}
+
+  /* EXTRAS UPSELL EN CARRITO */
+  .cart-extras-banner{display:flex;align-items:center;gap:0.8rem;background:rgba(245,192,0,0.1);border:2px solid rgba(245,192,0,0.3);border-radius:12px;padding:0.8rem 1rem;margin:0.7rem 1.1rem 0;cursor:pointer;transition:all 0.15s;}
+  .cart-extras-banner:hover{background:rgba(245,192,0,0.18);border-color:var(--amarillo);}
+  .cart-extras-icon{font-size:1.8rem;flex-shrink:0;}
+  .cart-extras-text{flex:1;}
+  .cart-extras-title{font-weight:900;font-size:0.88rem;color:var(--amarillo);}
+  .cart-extras-sub{font-size:0.72rem;color:rgba(255,255,255,0.5);margin-top:0.1rem;}
+  .cart-extras-arrow{font-size:1.4rem;color:var(--amarillo);font-weight:900;}
+
+  /* UPSELL EN MODAL PIZZA */
+  .upsell-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;}
+  .upsell-chip{background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.12);border-radius:12px;padding:0.6rem 0.7rem;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:0.5rem;}
+  .upsell-chip:hover{border-color:var(--amarillo);background:rgba(245,192,0,0.1);}
+  .upsell-chip.sel{background:rgba(245,192,0,0.15);border-color:var(--amarillo);}
+  .upsell-chip-icon{font-size:1.3rem;flex-shrink:0;}
+  .upsell-chip-info{flex:1;min-width:0;}
+  .upsell-chip-name{font-size:0.75rem;font-weight:800;color:#fff;line-height:1.2;}
+  .upsell-chip-price{font-size:0.68rem;color:rgba(255,255,255,0.45);margin-top:0.1rem;}
 
   /* BANNER PROMO */
   #promoBanner{background:var(--rojo);position:relative;z-index:90;}
@@ -292,14 +336,16 @@
   </div>
 </div>
 
-<div class="tabs-wrap">
+<div class="tabs-wrap" id="tabsWrap">
   <div class="tabs">
     <button class="tab active" onclick="showCat('especiales',this)">Especiales</button>
     <button class="tab" onclick="showCat('nuevas',this)">🆕 Nuevas</button>
     <button class="tab" onclick="showCat('arma',this)">Arma tu Pizza</button>
     <button class="tab" onclick="showCat('combos',this)">Combos</button>
     <button class="tab" onclick="showCat('extras',this)">Extras & Bebidas</button>
+    <button class="tab" onclick="showCat('ia',this)">🤖 Pizza IA</button>
   </div>
+  <span class="tabs-scroll-hint" id="tabsHint">»</span>
 </div>
 
 <!-- BANNER PROMOCIÓN -->
@@ -452,7 +498,34 @@
   <!-- EXTRAS & BEBIDAS -->
   <div class="cat-section" id="cat-extras">
     <div class="section-title">🧄 Extras & Bebidas</div>
-    <div class="extras-grid" id="grid-extras"></div>
+    <div class="grid" id="grid-extras"></div>
+  </div>
+
+  <!-- PIZZA IA -->
+  <div class="cat-section" id="cat-ia">
+    <div class="section-title">🤖 Pizza con IA</div>
+    <div class="ia-card">
+      <div class="ia-header">
+        <div style="font-size:2rem">🍕</div>
+        <div>
+          <div class="ia-title">¡Arma tu pizza perfecta!</div>
+          <div class="ia-sub">Responde 3 preguntas y la IA elige tus ingredientes</div>
+        </div>
+      </div>
+      <div id="iaChat" class="ia-chat"></div>
+      <div id="iaInputArea" class="ia-options"></div>
+      <div id="iaResult" style="display:none">
+        <div class="ia-result-title">🎉 ¡Tu pizza está lista!</div>
+        <div class="ia-result-desc" id="iaResultDesc"></div>
+        <div class="ing-grid" id="iaIngGrid" style="margin:0.8rem 0"></div>
+        <div class="arma-footer">
+          <div class="arma-price"><small>Precio base</small><span>$11.000</span></div>
+          <button class="arma-add-btn" onclick="addIAPizzaToCart()">+ Agregar al pedido</button>
+        </div>
+      </div>
+      <button class="ia-restart-btn" id="iaRestartBtn" style="display:none">🎲 Generar otra opción</button>
+      <button class="ia-restart-btn" style="margin-top:0.3rem;opacity:0.5" onclick="startIA()">↺ Empezar de nuevo</button>
+    </div>
   </div>
 </main>
 
@@ -491,6 +564,17 @@
       <div class="modal-total-label">Total de esta pizza</div>
       <div class="modal-total-amount" id="mTotal"></div>
     </div>
+
+    <!-- EXTRAS UPSELL -->
+    <div class="modal-section">
+      <span class="modal-section-label">🧄 Extras (opcional)</span>
+      <div class="upsell-grid" id="upsellExtrasChips"></div>
+    </div>
+    <div class="modal-section">
+      <span class="modal-section-label">🥤 Bebidas 1,5L (opcional)</span>
+      <div class="upsell-grid" id="upsellBebidasChips"></div>
+    </div>
+
     <div class="modal-actions">
       <button class="btn-seguir" onclick="confirmAndContinue()">✔ Agregar y seguir comprando</button>
       <button class="btn-confirmar" onclick="confirmAndCheckout()">🛒 Agregar y ver pedido</button>
@@ -664,14 +748,27 @@
 <!-- CARRITO -->
 <div class="cart-panel" id="cartPanel">
   <div class="cart-toggle-btn" onclick="toggleCart()">
-    <span id="cartToggleText">🛒 Ver Pedido</span>
-    <span class="cart-total-mini" id="miniTotal">$0</span>
+    <span style="display:flex;align-items:center;gap:0.5rem;">
+      <span id="cartToggleText">🛒 Ver Pedido</span>
+      <span class="cart-chevron" style="font-size:1.2rem;font-weight:900;">▲</span>
+    </span>
+    <span style="background:#fff;border-radius:50px;padding:0.25rem 0.9rem;font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--negro);font-weight:900;" id="miniTotal">$0</span>
   </div>
   <div class="cart-header-inner">
     <div class="cart-title">🛒 Mi Pedido</div>
   </div>
   <div class="empty-cart" id="emptyMsg">Aún no has agregado nada 🍕</div>
   <div class="cart-items" id="cartItems"></div>
+
+  <!-- BANNER EXTRAS EN CARRITO -->
+  <div class="cart-extras-banner" id="cartExtrasBanner" style="display:none" onclick="goToExtras()">
+    <div class="cart-extras-icon">🧄</div>
+    <div class="cart-extras-text">
+      <div class="cart-extras-title">¿Algo para acompañar?</div>
+      <div class="cart-extras-sub">Palitos de ajo · Rollitos · Bebidas</div>
+    </div>
+    <div class="cart-extras-arrow">›</div>
+  </div>
   <div id="checkoutSection" style="display:none">
     <hr class="cart-divider">
     <input class="nombre-field" id="nombreField" type="text" placeholder="Tu nombre para el pedido..." maxlength="60">
@@ -767,13 +864,13 @@ const rollitos = [
   { id:'rollitos', name:'Rollitos de Pesto con Queso', ingredients:['Masa suave rellena con pesto y queso mozzarella, recién salidos del horno'], price:4900, img:'rollitos.png', direct:true },
 ];
 const extrasMenu = [
-  { id:'palitos',  name:'Palitos de Ajo',     sub:'Bastones de masa horneada', price:3900, emoji:'🧄' },
-  { id:'rollitosex', name:'Rollitos de Pesto con Queso', sub:'Con queso mozzarella', price:4900, emoji:'🌿' },
-  { id:'coca',     name:'Coca-Cola 1,5L',     sub:'Sabor Original', price:3000, emoji:'🥤' },
-  { id:'cocazero', name:'Coca-Cola Zero 1,5L',sub:'Sin azúcar',     price:3000, emoji:'🥤' },
-  { id:'fanta',    name:'Fanta 1,5L',         sub:'',               price:3000, emoji:'🍊' },
-  { id:'sprite',   name:'Sprite 1,5L',        sub:'',               price:3000, emoji:'💚' },
-  { id:'limon',    name:'Limón Soda 1,5L',    sub:'',               price:3000, emoji:'🍋' },
+  { id:'palitos',    name:'Palitos de Ajo',           sub:'Bastones de masa horneada', price:3900, emoji:'🧄', img:'palitos.png' },
+  { id:'rollitosex', name:'Rollitos de Pesto con Queso', sub:'Con queso mozzarella',   price:4900, emoji:'🌿', img:'rollo.png' },
+  { id:'coca',       name:'Coca-Cola 1,5L',            sub:'Sabor Original',           price:3000, emoji:'🥤', img:'coca.png' },
+  { id:'cocazero',   name:'Coca-Cola Zero 1,5L',       sub:'Sin azúcar',               price:3000, emoji:'🥤', img:'cocazero.png' },
+  { id:'fanta',      name:'Fanta 1,5L',                sub:'',                         price:3000, emoji:'🍊', img:'fanta.png' },
+  { id:'sprite',     name:'Sprite 1,5L',               sub:'',                         price:3000, emoji:'💚', img:'sprite.png' },
+  { id:'limon',      name:'Limón Soda 1,5L',           sub:'',                         price:3000, emoji:'🍋', img:'limon.png' },
 ];
 // Extras opcionales para el combo TenTen
 const comboExtrasOpts = [
@@ -830,16 +927,25 @@ function renderGrid(containerId, items) {
 }
 
 function renderExtras() {
-  document.getElementById('grid-extras').innerHTML = extrasMenu.map(e => `
-    <div class="extra-card">
-      <div style="font-size:2rem;text-align:center;padding:.5rem 0">${e.emoji}</div>
-      <div class="card-name">${e.name}</div>
-      ${e.sub ? `<div class="card-ingredients">${e.sub}</div>` : ''}
-      <div class="card-footer" style="margin-top:auto;padding-top:.5rem">
-        <div class="price">$${e.price.toLocaleString('es-CL')}</div>
-        <button class="add-btn" onclick="addDirect('${e.id}','${e.name}','${e.sub}',${e.price})">+ Agregar</button>
+  document.getElementById('grid-extras').innerHTML = extrasMenu.map(e => {
+    const fotoTop = e.img
+      ? `<div style="width:115px;min-width:115px;height:115px;flex-shrink:0;border-radius:10px;margin:0.4rem 0 0.4rem 0.4rem;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center;">
+           <img src="${e.img}" alt="${e.name}" style="width:100%;height:100%;object-fit:contain;" onerror="this.parentElement.innerHTML='<span style=\\'font-size:2rem\\'>${e.emoji}</span>'">
+         </div>`
+      : `<div style="width:115px;min-width:115px;height:115px;flex-shrink:0;border-radius:10px;margin:0.4rem 0 0.4rem 0.4rem;background:linear-gradient(135deg,#fff8ee,#fff3d0);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">${e.emoji}</div>`;
+    return `
+    <div class="card">
+      ${fotoTop}
+      <div class="card-body">
+        <div class="card-name">${e.name}</div>
+        ${e.sub ? `<div class="card-ingredients">${e.sub}</div>` : ''}
+        <div class="card-footer">
+          <div class="price">$${e.price.toLocaleString('es-CL')}</div>
+          <button class="add-btn" onclick="addDirect('${e.id}','${e.name}','${e.sub}',${e.price})">+ Agregar</button>
+        </div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 // ═══════════════ ARMA TU PIZZA ═══════════════
@@ -927,6 +1033,7 @@ function openModal(pizzaId){
   document.getElementById('mCarneChips').innerHTML=extrasCarnes.map(c=>
     `<div class="m-chip" onclick="toggleMExtra(this,'carne','${c.replace(/'/g,"&#39;")}',2000)">${c}<span class="chip-price">+$2.000</span></div>`).join('');
   updateModalTotal();
+  renderUpsell();
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -971,8 +1078,8 @@ function buildCartItem(){
   if(mCarnes.length)parts.push(`+Carne: ${mCarnes.map(c=>c.name).join(', ')}`);
   return{name:modalPizza.name,sub:parts.length?parts.join(' · '):'Sin modificaciones',price:total};
 }
-function confirmAndContinue(){const item=buildCartItem();pushToCart(modalPizza.id,item.name,item.sub,item.price);closeModal();showToast('🍕 ¡Agregada! Sigue pidiendo 😋');}
-function confirmAndCheckout(){const item=buildCartItem();pushToCart(modalPizza.id,item.name,item.sub,item.price);closeModal();openCart();}
+function confirmAndContinue(){const item=buildCartItem();pushToCart(modalPizza.id,item.name,item.sub,item.price);addUpsellToCart();closeModal();showToast('🍕 ¡Agregada! Sigue pidiendo 😋');}
+function confirmAndCheckout(){const item=buildCartItem();pushToCart(modalPizza.id,item.name,item.sub,item.price);addUpsellToCart();closeModal();openCart();}
 
 // ═══════════════ MODAL COMBO TENTEN ═══════════════
 function openComboTenTen(){
@@ -1307,8 +1414,18 @@ function confirmMiercolesAndContinue(){
 // ═══════════════ CARRITO ═══════════════
 function addDirect(id,name,sub,price){pushToCart(id,name,sub,price);showToast(`✔ ${name} agregado`);if(!cartOpen)openCart();}
 function pushToCart(id,name,sub,price){cart.push({uid:Date.now()+Math.random(),id,name,sub,price,qty:1});renderCart();}
-function openCart(){cartOpen=true;document.getElementById('cartPanel').classList.add('open');document.getElementById('cartToggleText').textContent='✕ Cerrar pedido';}
-function closeCart(){cartOpen=false;document.getElementById('cartPanel').classList.remove('open');document.getElementById('cartToggleText').textContent='🛒 Ver Pedido';}
+function openCart(){
+  cartOpen=true;
+  document.getElementById('cartPanel').classList.add('open');
+  const t=document.getElementById('cartToggleText');
+  if(t) t.textContent='✕ Cerrar pedido';
+}
+function closeCart(){
+  cartOpen=false;
+  document.getElementById('cartPanel').classList.remove('open');
+  const t=document.getElementById('cartToggleText');
+  if(t) t.textContent='🛒 Ver Pedido';
+}
 function toggleCart(){cartOpen?closeCart():openCart();}
 function changeQty(uid,delta){
   const item=cart.find(x=>x.uid===uid);if(!item)return;
@@ -1324,9 +1441,9 @@ function renderCart(){
   const emptyMsg=document.getElementById('emptyMsg');
   const cartItemsEl=document.getElementById('cartItems');
   const checkout=document.getElementById('checkoutSection');
-  if(cart.length===0){emptyMsg.style.display='';cartItemsEl.innerHTML='';checkout.style.display='none';}
+  if(cart.length===0){emptyMsg.style.display='';cartItemsEl.innerHTML='';checkout.style.display='none';document.getElementById('cartPanel').classList.remove('has-items');const b=document.getElementById('cartExtrasBanner');if(b)b.style.display='none';}
   else{
-    emptyMsg.style.display='none';checkout.style.display='';
+    emptyMsg.style.display='none';checkout.style.display='';document.getElementById('cartPanel').classList.add('has-items');const b=document.getElementById('cartExtrasBanner');if(b)b.style.display='flex';
     cartItemsEl.innerHTML=cart.map(item=>`
       <div class="cart-item">
         <div class="cart-item-info">
@@ -1584,6 +1701,276 @@ function nextSlide(){
 
 setInterval(nextSlide, 5000);
 
+// ═══════════════ UPSELL EXTRAS ═══════════════
+const upsellExtras = [
+  { id:'palitos',    name:'Palitos de Ajo',    price:3900, emoji:'🧄' },
+  { id:'rollitosex', name:'Rollitos de Pesto', price:4900, emoji:'🌿' },
+];
+const upsellBebidas = [
+  { id:'coca',     name:'Coca-Cola',      price:3000, emoji:'🥤' },
+  { id:'cocazero', name:'Coca-Cola Zero', price:3000, emoji:'🥤' },
+  { id:'fanta',    name:'Fanta',          price:3000, emoji:'🍊' },
+  { id:'sprite',   name:'Sprite',         price:3000, emoji:'💚' },
+  { id:'limon',    name:'Limón Soda',     price:3000, emoji:'🍋' },
+];
+const upsellItems = [...upsellExtras, ...upsellBebidas];
+let upsellSelected = [];
+
+function renderUpsellChips(containerId, items){
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  el.innerHTML = items.map(u=>`
+    <div class="upsell-chip" id="up-${u.id}" onclick="toggleUpsell('${u.id}')">
+      <div class="upsell-chip-icon">${u.emoji}</div>
+      <div class="upsell-chip-info">
+        <div class="upsell-chip-name">${u.name}</div>
+        <div class="upsell-chip-price">+$${u.price.toLocaleString('es-CL')}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderUpsell(){
+  upsellSelected = [];
+  renderUpsellChips('upsellExtrasChips', upsellExtras);
+  renderUpsellChips('upsellBebidasChips', upsellBebidas);
+}
+
+function toggleUpsell(id){
+  const el = document.getElementById(`up-${id}`);
+  const idx = upsellSelected.indexOf(id);
+  if(idx>-1){ upsellSelected.splice(idx,1); el.classList.remove('sel'); }
+  else { upsellSelected.push(id); el.classList.add('sel'); }
+}
+
+function addUpsellToCart(){
+  upsellSelected.forEach(id=>{
+    const item = upsellItems.find(u=>u.id===id);
+    if(item) pushToCart(item.id, item.name, '', item.price);
+  });
+}
+
+function goToExtras(){
+  closeCart();
+  // Ir a la tab de extras
+  document.querySelectorAll('.cat-section').forEach(s=>s.classList.remove('visible'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('cat-extras').classList.add('visible');
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(t=>{ if(t.textContent.includes('Extras')) t.classList.add('active'); });
+  window.scrollTo({top: document.getElementById('cat-extras').offsetTop - 100, behavior:'smooth'});
+}
+function initTabsHint(){
+  const wrap = document.getElementById('tabsWrap');
+  const hint = document.getElementById('tabsHint');
+  if(!wrap||!hint) return;
+  wrap.addEventListener('scroll',()=>{
+    const atEnd = wrap.scrollLeft + wrap.clientWidth >= wrap.scrollWidth - 5;
+    hint.style.opacity = atEnd ? '0' : '1';
+  });
+}
+
+// ═══════════════ PIZZA IA ═══════════════
+const iaPreguntas = [
+  {
+    pregunta: '¿Qué tipo de sabores prefieres?',
+    opciones: [
+      { texto:'🌶️ Intensos y con carácter', val:'intenso' },
+      { texto:'🧀 Suaves y cremosos', val:'suave' },
+      { texto:'🌿 Frescos y livianos', val:'fresco' },
+    ]
+  },
+  {
+    pregunta: '¿Qué prefieres más?',
+    opciones: [
+      { texto:'🥩 Carnes y proteínas', val:'carne' },
+      { texto:'🥦 Vegetales y verduras', val:'vegetal' },
+      { texto:'🎯 Mezcla de todo', val:'mixto' },
+    ]
+  },
+  {
+    pregunta: '¿Algo que definitivamente NO quieras?',
+    opciones: [
+      { texto:'🧅 Sin cebolla', val:'nocebolla' },
+      { texto:'🌶️ Sin picante', val:'nopicante' },
+      { texto:'🦐 Sin mariscos', val:'nomariscos' },
+      { texto:'😄 Me gusta todo', val:'todo' },
+    ]
+  }
+];
+
+// Combinaciones usando SOLO ingredientes de ingIncluidos
+const iaCombinaciones = {
+  'intenso-carne':   [['Choricillo','Tocino','Morrón'],['Choricillo','Salame','Cebolla Morada'],['Tocino','Salame','Morrón'],['Choricillo','Tocino','Choclo']],
+  'intenso-vegetal': [['Morrón','Cebolla Morada','Choclo'],['Morrón','Aceituna','Cebolla Morada'],['Choclo','Morrón','Tomate'],['Cebolla Morada','Champiñón','Morrón']],
+  'intenso-mixto':   [['Choricillo','Morrón','Choclo'],['Salame','Cebolla Morada','Morrón'],['Tocino','Morrón','Tomate'],['Choricillo','Choclo','Aceituna']],
+  'suave-carne':     [['Jamón','Tocino','Champiñón'],['Jamón','Pollo','Tomate'],['Tocino','Champiñón','Aceituna'],['Pollo','Jamón','Choclo']],
+  'suave-vegetal':   [['Tomate','Aceituna','Champiñón'],['Aceituna','Champiñón','Choclo'],['Tomate','Champiñón','Espárrago'],['Aceituna','Tomate','Morrón']],
+  'suave-mixto':     [['Jamón','Tomate','Champiñón'],['Pollo','Tomate','Aceituna'],['Jamón','Aceituna','Champiñón'],['Tocino','Tomate','Choclo']],
+  'fresco-carne':    [['Pollo','Tomate','Espárrago'],['Pollo','Aceituna','Tomate'],['Pollo','Choclo','Tomate'],['Jamón','Espárrago','Tomate']],
+  'fresco-vegetal':  [['Tomate','Aceituna','Espárrago'],['Espárrago','Champiñón','Tomate'],['Aceituna','Tomate','Choclo'],['Espárrago','Aceituna','Morrón']],
+  'fresco-mixto':    [['Pollo','Tomate','Aceituna'],['Jamón','Espárrago','Tomate'],['Pollo','Champiñón','Aceituna'],['Tomate','Choclo','Jamón']],
+};
+
+const restricciones = {
+  'nocebolla': ['Cebolla Morada'],
+  'nopicante':  [],
+  'nomariscos': [],
+  'todo': []
+};
+
+let iaRespuestas = [];
+let iaPreguntaActual = 0;
+let iaIngredientesElegidos = [];
+let iaComboIndex = 0;
+let iaCombosPosibles = [];
+
+function iaGetCombos(respuestas){
+  const [sabor, proteina, restriccion] = respuestas;
+  const key = `${sabor}-${proteina}`;
+  const restrict = restricciones[restriccion] || [];
+  const base = iaCombinaciones[key] || iaCombinaciones['suave-mixto'];
+  // Filtrar restricciones y retornar todas las válidas
+  return base.map(combo => combo.filter(i => !restrict.includes(i)))
+    .map(combo => {
+      // Completar si faltan por restricción
+      const seguros = ['Jamón','Choclo','Champiñón','Tomate','Morrón','Aceituna'];
+      while(combo.length < 3){
+        const f = seguros.find(s => !combo.includes(s) && !restrict.includes(s));
+        if(f) combo.push(f); else break;
+      }
+      return combo.slice(0,3);
+    })
+    .filter(combo => combo.length === 3);
+}
+
+function startIA(){
+  iaRespuestas = [];
+  iaPreguntaActual = 0;
+  iaIngredientesElegidos = [];
+  iaComboIndex = 0;
+  iaCombosPosibles = [];
+  const chat = document.getElementById('iaChat');
+  const result = document.getElementById('iaResult');
+  const restart = document.getElementById('iaRestartBtn');
+  const input = document.getElementById('iaInputArea');
+  if(chat) chat.innerHTML = '';
+  if(result) result.style.display = 'none';
+  if(restart) restart.style.display = 'none';
+  if(input) input.style.display = '';
+  iaHacerPregunta();
+}
+
+function iaHacerPregunta(){
+  if(iaPreguntaActual >= iaPreguntas.length){ iaGenerarPizza(); return; }
+  const chat = document.getElementById('iaChat');
+  if(!chat) return;
+  const typing = document.createElement('div');
+  typing.className = 'ia-typing';
+  typing.textContent = '🤖 escribiendo...';
+  chat.appendChild(typing);
+  chat.scrollTop = chat.scrollHeight;
+  setTimeout(()=>{
+    if(!chat.contains(typing)) return;
+    chat.removeChild(typing);
+    const msg = document.createElement('div');
+    msg.className = 'ia-msg bot';
+    msg.textContent = iaPreguntas[iaPreguntaActual].pregunta;
+    chat.appendChild(msg);
+    chat.scrollTop = chat.scrollHeight;
+    const area = document.getElementById('iaInputArea');
+    if(area) area.innerHTML = iaPreguntas[iaPreguntaActual].opciones.map((o,i)=>
+      `<button class="ia-opt" onclick="iaResponder(${i})">${o.texto}</button>`
+    ).join('');
+  }, 600);
+}
+
+function iaResponder(idx){
+  const op = iaPreguntas[iaPreguntaActual].opciones[idx];
+  iaRespuestas.push(op.val);
+  const chat = document.getElementById('iaChat');
+  if(chat){
+    const msg = document.createElement('div');
+    msg.className = 'ia-msg user';
+    msg.textContent = op.texto;
+    chat.appendChild(msg);
+    chat.scrollTop = chat.scrollHeight;
+  }
+  const area = document.getElementById('iaInputArea');
+  if(area) area.innerHTML = '';
+  iaPreguntaActual++;
+  setTimeout(iaHacerPregunta, 400);
+}
+
+function iaGenerarPizza(){
+  const chat = document.getElementById('iaChat');
+  const typing = document.createElement('div');
+  typing.className = 'ia-typing';
+  typing.textContent = '🤖 Analizando tus gustos...';
+  if(chat){ chat.appendChild(typing); chat.scrollTop = chat.scrollHeight; }
+
+  setTimeout(()=>{
+    if(chat && chat.contains(typing)) chat.removeChild(typing);
+
+    iaCombosPosibles = iaGetCombos(iaRespuestas);
+    iaComboIndex = 0;
+    mostrarCombo();
+  }, 1200);
+}
+
+function mostrarCombo(){
+  if(!iaCombosPosibles.length) return;
+  iaIngredientesElegidos = iaCombosPosibles[iaComboIndex % iaCombosPosibles.length];
+
+  const chat = document.getElementById('iaChat');
+  if(chat){
+    // Quitar mensaje anterior del bot si existe
+    const prevBot = chat.querySelector('.ia-msg.bot.ia-rec');
+    if(prevBot) chat.removeChild(prevBot);
+    const msg = document.createElement('div');
+    msg.className = 'ia-msg bot ia-rec';
+    msg.textContent = `¡Perfecto! Opción ${(iaComboIndex % iaCombosPosibles.length)+1} de ${iaCombosPosibles.length}: ${iaIngredientesElegidos.join(', ')} 🍕`;
+    chat.appendChild(msg);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  const area = document.getElementById('iaInputArea');
+  if(area) area.style.display = 'none';
+
+  const resultDesc = document.getElementById('iaResultDesc');
+  if(resultDesc) resultDesc.textContent = `Base: Salsa de Tomate + Queso mozzarella · Ingredientes: ${iaIngredientesElegidos.join(', ')}`;
+
+  const iaIngGrid = document.getElementById('iaIngGrid');
+  if(iaIngGrid) iaIngGrid.innerHTML = ingIncluidos.map(i=>
+    `<div class="ing-chip ${iaIngredientesElegidos.includes(i)?'selected':''}" style="pointer-events:none">${i}</div>`
+  ).join('');
+
+  const result = document.getElementById('iaResult');
+  if(result) result.style.display = '';
+
+  // Botón generar otra
+  const restart = document.getElementById('iaRestartBtn');
+  if(restart){
+    restart.style.display = '';
+    restart.textContent = `🎲 Generar otra opción (${iaCombosPosibles.length} disponibles)`;
+    restart.onclick = () => { iaComboIndex++; mostrarCombo(); };
+  }
+}
+
+function addIAPizzaToCart(){
+  if(!iaIngredientesElegidos || iaIngredientesElegidos.length < 3){
+    showToast('⚠️ Primero completa las preguntas');
+    return;
+  }
+  // Crear ítem directamente en el carrito — sin tocar ningún formulario
+  const ing = iaIngredientesElegidos.join(', ');
+  const nombre = '🤖 Pizza IA';
+  const sub = 'Base: Salsa de Tomate · Queso mozzarella · ' + ing;
+  cart.push({ uid: Date.now() + Math.random(), id:'pizza-ia', name: nombre, sub: sub, price: 11000, qty: 1 });
+  renderCart();
+  showToast('🤖 ¡Pizza IA agregada al pedido!');
+  openCart();
+}
+
 // ═══════════════ INIT ═══════════════
 renderGrid('grid-especiales',[...pizzasEspeciales,...pizzasNuevas]);
 renderGrid('grid-nuevas',pizzasNuevas);
@@ -1591,6 +1978,8 @@ renderGrid('grid-rollitos',rollitos);
 renderExtras();
 renderArmaGrids();
 renderCart();
+initTabsHint();
+startIA();
 </script>
 </body>
 </html>
