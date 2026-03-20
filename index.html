@@ -34,7 +34,7 @@
   /* TABS */
   .tabs-wrap{background:var(--negro);overflow-x:auto;scrollbar-width:none;position:relative;}
   .tabs-wrap::-webkit-scrollbar{display:none;}
-  .tabs-wrap::after{content:'';position:absolute;right:0;top:0;bottom:0;width:64px;background:linear-gradient(to left,var(--negro) 40%,transparent);pointer-events:none;}
+  .tabs-wrap::after{display:none;}
   .tabs{display:flex;width:max-content;padding:0 0.3rem;}
   .tab{background:none;border:none;color:rgba(255,255,255,0.55);font-family:'Nunito',sans-serif;font-weight:800;font-size:0.78rem;padding:0.75rem 0.85rem;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:color 0.2s,border-color 0.2s;letter-spacing:0.3px;}
   .tab.active,.tab:hover{color:var(--amarillo);border-bottom-color:var(--amarillo);}
@@ -336,16 +336,22 @@
   </div>
 </div>
 
-<div class="tabs-wrap" id="tabsWrap">
-  <div class="tabs">
-    <button class="tab active" onclick="showCat('especiales',this)">Especiales</button>
-    <button class="tab" onclick="showCat('nuevas',this)">🆕 Nuevas</button>
-    <button class="tab" onclick="showCat('arma',this)">Arma tu Pizza</button>
-    <button class="tab" onclick="showCat('combos',this)">Combos</button>
-    <button class="tab" onclick="showCat('extras',this)">Extras & Bebidas</button>
-    <button class="tab" onclick="showCat('ia',this)">🤖 Pizza IA</button>
+<div style="position:relative;background:var(--negro);">
+  <div class="tabs-wrap" id="tabsWrap">
+    <div class="tabs">
+      <button class="tab active" onclick="showCat('especiales',this)">Especiales</button>
+      <button class="tab" onclick="showCat('nuevas',this)">🆕 Nuevas</button>
+      <button class="tab" onclick="showCat('arma',this)">Arma tu Pizza</button>
+      <button class="tab" onclick="showCat('combos',this)">Combos</button>
+      <button class="tab" onclick="showCat('extras',this)">Extras & Bebidas</button>
+      <button class="tab" onclick="showCat('ia',this)">🤖 Pizza IA</button>
+      <button class="tab" onclick="showCat('envios',this)">🚚 Envíos</button>
+    </div>
   </div>
-  <span class="tabs-scroll-hint" id="tabsHint">»</span>
+  <span class="tabs-scroll-hint" id="tabsHint" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);pointer-events:none;">»</span>
+</div>
+<div style="background:var(--negro);text-align:right;padding:0.18rem 0.7rem 0.22rem;font-size:0.65rem;font-weight:700;color:rgba(255,255,255,0.35);letter-spacing:0.3px;cursor:pointer;user-select:none;" onclick="document.getElementById('tabsWrap').scrollTo({left:9999,behavior:'smooth'})">
+  desliza para ver más ›
 </div>
 
 <!-- BANNER PROMOCIÓN -->
@@ -495,7 +501,72 @@
     </div>
   </div>
 
-  <!-- EXTRAS & BEBIDAS -->
+  <!-- ENVÍOS -->
+  <div class="cat-section" id="cat-envios">
+    <div class="section-title">🚚 Envíos</div>
+
+    <!-- Zonas -->
+    <div style="display:flex;flex-direction:column;gap:0.7rem;margin-bottom:1.2rem;">
+      <div style="background:#fff;border-radius:12px;padding:1rem 1.1rem;box-shadow:var(--sombra);display:flex;align-items:center;gap:0.9rem;">
+        <div style="font-size:2rem;flex-shrink:0;">🟢</div>
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:1px;color:var(--negro);">Sector Urbano de Quemchi</div>
+          <div style="font-size:0.78rem;color:#2ecc71;font-weight:900;margin-top:0.1rem;">¡ENVÍO GRATIS!</div>
+          <div style="font-size:0.72rem;color:#666;margin-top:0.2rem;">Cubrimos todo el casco urbano sin costo adicional</div>
+        </div>
+      </div>
+      <div style="background:#fff;border-radius:12px;padding:1rem 1.1rem;box-shadow:var(--sombra);display:flex;align-items:center;gap:0.9rem;">
+        <div style="font-size:2rem;flex-shrink:0;">🟡</div>
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:1px;color:var(--negro);">Sectores Rurales</div>
+          <div style="font-size:0.78rem;color:#e67e22;font-weight:900;margin-top:0.1rem;">COSTO ADICIONAL SEGÚN DISTANCIA</div>
+          <div style="font-size:0.72rem;color:#666;margin-top:0.2rem;">Llega igual a tu casa — el valor se coordina por WhatsApp</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Consultar envío -->
+    <div style="background:var(--negro);border-radius:16px;padding:1.2rem;color:#fff;box-shadow:var(--sombra);">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--amarillo);letter-spacing:1px;margin-bottom:0.3rem;">📍 ¿Llegamos a tu sector?</div>
+      <div style="font-size:0.8rem;color:rgba(255,255,255,0.6);margin-bottom:1rem;line-height:1.5;">Detecta tu ubicación y te confirmamos si hacemos envío a tu zona y el costo si aplica.</div>
+
+      <!-- Paso 1: GPS -->
+      <div id="envioStep1">
+        <button class="geo-btn" id="envioBtnGeo" onclick="getEnvioLocation()">
+          📍 Detectar mi ubicación
+        </button>
+        <p class="geo-hint">Toca el botón y acepta el permiso de ubicación 👆</p>
+      </div>
+
+      <!-- Paso 2: éxito -->
+      <div id="envioStep2" style="display:none;">
+        <div class="geo-success-box" style="margin-bottom:0.8rem;">
+          <span style="font-size:1.4rem">✅</span>
+          <div>
+            <div style="font-weight:900;font-size:0.85rem;color:#2ecc71;">¡Ubicación detectada!</div>
+            <a id="envioGeoLink" href="#" target="_blank" style="font-size:0.72rem;color:var(--amarillo)">Ver en Maps →</a>
+          </div>
+          <button class="geo-retry" onclick="resetEnvioGeo()">Cambiar</button>
+        </div>
+        <div id="envioResultado" style="background:rgba(255,255,255,0.07);border-radius:10px;padding:0.8rem;font-size:0.82rem;line-height:1.6;"></div>
+        <button class="wa-btn" id="envioBtnWA" style="margin-top:0.8rem;display:none" onclick="consultarEnvioWA()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Consultar por WhatsApp
+        </button>
+      </div>
+
+      <!-- Paso 3: error / manual -->
+      <div id="envioStep3" style="display:none;">
+        <div style="font-size:0.8rem;color:rgba(255,255,255,0.7);margin-bottom:0.6rem;line-height:1.5;" id="envioErrMsg"></div>
+        <textarea class="notas-field" id="envioDireccionField" placeholder="Ej: Camino a Dalcahue km 3, sector Los Boldos..." rows="2" style="margin-bottom:0.4rem"></textarea>
+        <button class="wa-btn" onclick="consultarEnvioManualWA()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Consultar por WhatsApp
+        </button>
+        <button class="geo-retry-gps" onclick="resetEnvioGeo()" style="margin-top:0.5rem;display:block;">← Intentar con GPS de nuevo</button>
+      </div>
+    </div>
+  </div>
   <div class="cat-section" id="cat-extras">
     <div class="section-title">🧄 Extras & Bebidas</div>
     <div class="grid" id="grid-extras"></div>
@@ -1763,10 +1834,14 @@ function initTabsHint(){
   const wrap = document.getElementById('tabsWrap');
   const hint = document.getElementById('tabsHint');
   if(!wrap||!hint) return;
-  wrap.addEventListener('scroll',()=>{
+  function updateHint(){
     const atEnd = wrap.scrollLeft + wrap.clientWidth >= wrap.scrollWidth - 5;
     hint.style.opacity = atEnd ? '0' : '1';
-  });
+    // Mover la flecha para que no tape los tabs — se posiciona relativa al scroll
+    hint.style.right = Math.max(8, 8 - wrap.scrollLeft * 0.1) + 'px';
+  }
+  wrap.addEventListener('scroll', updateHint);
+  updateHint();
 }
 
 // ═══════════════ PIZZA IA ═══════════════
@@ -1969,6 +2044,67 @@ function addIAPizzaToCart(){
   renderCart();
   showToast('🤖 ¡Pizza IA agregada al pedido!');
   openCart();
+}
+
+// ═══════════════ CONSULTA ENVÍO ═══════════════
+let envioGeoUrl = '';
+
+function getEnvioLocation(){
+  const btn = document.getElementById('envioBtnGeo');
+  if(!navigator.geolocation){ showEnvioStep3('Tu navegador no tiene GPS. Escribe tu dirección:'); return; }
+  btn.textContent = '⏳ Detectando...';
+  btn.disabled = true;
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      const lat = pos.coords.latitude.toFixed(6);
+      const lng = pos.coords.longitude.toFixed(6);
+      envioGeoUrl = `https://maps.google.com/?q=${lat},${lng}`;
+      document.getElementById('envioGeoLink').href = envioGeoUrl;
+      document.getElementById('envioStep1').style.display = 'none';
+      document.getElementById('envioStep2').style.display = '';
+      btn.textContent = '📍 Detectar mi ubicación';
+      btn.disabled = false;
+      // Mostrar resultado y botón WA
+      document.getElementById('envioResultado').innerHTML =
+        `🟢 <b>¡Gracias!</b> Recibimos tu ubicación.<br>Si estás en el sector urbano de Quemchi el envío es <b style="color:#2ecc71">GRATIS</b>.<br>Si estás en zona rural te confirmamos el costo por WhatsApp.`;
+      document.getElementById('envioBtnWA').style.display = '';
+    },
+    err => {
+      btn.textContent = '📍 Detectar mi ubicación';
+      btn.disabled = false;
+      if(err.code===1) showEnvioStep3('Permiso de ubicación bloqueado. Escribe tu dirección y te confirmamos el envío:');
+      else showEnvioStep3('No se pudo obtener tu ubicación. Escribe tu dirección:');
+    },
+    { timeout:12000, enableHighAccuracy:true }
+  );
+}
+
+function showEnvioStep3(msg){
+  document.getElementById('envioStep1').style.display = 'none';
+  document.getElementById('envioErrMsg').textContent = msg;
+  document.getElementById('envioStep3').style.display = '';
+}
+
+function resetEnvioGeo(){
+  envioGeoUrl = '';
+  document.getElementById('envioStep1').style.display = '';
+  document.getElementById('envioStep2').style.display = 'none';
+  document.getElementById('envioStep3').style.display = 'none';
+  const btn = document.getElementById('envioBtnGeo');
+  btn.textContent = '📍 Detectar mi ubicación';
+  btn.disabled = false;
+}
+
+function consultarEnvioWA(){
+  const msg = `Hola TenTen Pizza 👋\n\n¿Hacen reparto a mi ubicación?\n\n📍 ${envioGeoUrl}\n\n¿Tiene costo el envío?`;
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+function consultarEnvioManualWA(){
+  const dir = document.getElementById('envioDireccionField').value.trim();
+  if(!dir){ showToast('⚠️ Escribe tu dirección primero'); return; }
+  const msg = `Hola TenTen Pizza 👋\n\n¿Hacen reparto a:\n📍 ${dir}\n\n¿Tiene costo el envío?`;
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`,'_blank');
 }
 
 // ═══════════════ INIT ═══════════════
